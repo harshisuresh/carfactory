@@ -35,7 +35,7 @@ public class CreateCoachworkActor extends AbstractActor {
             final ActorRef coachworkFilter = getContext().actorOf(Props.create(FilterCoachWorksActor.class), "coachworkFilter");
 
             final Inbox inbox = Inbox.create(getContext().system());
-            for (int i = 10000 ; i < 10000000; i++) {
+            for (int i = 1 ; i < 20; i++) {
                 CoachWork coachWork = new CoachWork("Coach:"+UUID.randomUUID().toString(), random.nextBoolean());
                 inbox.send(coachworkFilter, coachWork);
             }

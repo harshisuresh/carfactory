@@ -40,7 +40,7 @@ public class CreateEngineActor extends AbstractActor {
             final ActorRef engineFilter = getContext().actorOf(Props.create(FilterEngineActor.class), "engineFilter");
 
             final Inbox inbox = Inbox.create(getContext().system());
-            for (int i = 10000 ; i < 10000000; i++) {
+            for (int i = 1 ; i < 20; i++) {
                 Engine engine = new Engine("Engine:"+ UUID.randomUUID().toString(), random.nextBoolean());
                 inbox.send(engineFilter, engine);
             }

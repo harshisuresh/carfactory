@@ -25,7 +25,7 @@ public class FilterEngineActor extends AbstractActor {
             return;
         }
         LOG.info("Filtered engine {}", engine);
-        final ActorRef carAssembler = getContext().actorSelection("carAssembler").anchor();
+        final ActorRef carAssembler = getContext().actorFor("akka://carfactory/user/carAssembler");
         final Inbox inbox = Inbox.create(getContext().system());
         inbox.send(carAssembler, engine);
     }

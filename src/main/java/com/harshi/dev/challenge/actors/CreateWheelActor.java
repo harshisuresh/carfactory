@@ -36,7 +36,7 @@ public class CreateWheelActor extends AbstractActor {
             final ActorRef wheelFilter = getContext().actorOf(Props.create(FilterWheelActor.class), "wheelFilter");
 
             final Inbox inbox = Inbox.create(getContext().system());
-            for (int i = 10000 ; i < 10000000; i++) {
+            for (int i = 1 ; i < 20; i++) {
                 Wheel wheel = new Wheel("Wheel:" + UUID.randomUUID().toString(), random.nextBoolean());
                 inbox.send(wheelFilter, wheel);
             }

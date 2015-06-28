@@ -21,6 +21,7 @@ public class CarFactory {
         final ActorRef coachworkCreator = system.actorOf(Props.create(CreateCoachworkActor.class), "coachworkCreator");
         final ActorRef wheelCreator = system.actorOf(Props.create(CreateWheelActor.class), "wheelCreator");
         final ActorRef carAssembler = system.actorOf(Props.create(AssembleCarActor.class), "carAssembler");
+        System.out.println(carAssembler.path());
         engineCreator.tell(Message.START, ActorRef.noSender());
         coachworkCreator.tell(Message.START, ActorRef.noSender());
         wheelCreator.tell(Message.START, ActorRef.noSender());

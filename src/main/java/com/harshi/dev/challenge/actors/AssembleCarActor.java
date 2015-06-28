@@ -15,6 +15,8 @@ public class AssembleCarActor extends UntypedActor {
 
     @Override
     public void onReceive(Object message) throws Exception {
+        getContext().
+        LOG.info("Car Assembler");
         if(message instanceof Wheel){
             Wheel wheel = (Wheel)message;
             LOG.info("Received wheel");

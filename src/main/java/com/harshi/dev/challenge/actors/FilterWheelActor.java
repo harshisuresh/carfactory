@@ -24,9 +24,8 @@ public class FilterWheelActor extends AbstractActor{
             return;
         }
         LOG.info("Filtered wheel {}", wheel);
-        final ActorRef carAssembler = getContext().actorSelection("carAssembler").anchor();
+        final ActorRef carAssembler = getContext().actorFor("akka://carfactory/user/carAssembler");
         final Inbox inbox = Inbox.create(getContext().system());
         inbox.send(carAssembler, wheel);
-        LOG.info("************"+carAssembler.path().toString());
     }
 }

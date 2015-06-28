@@ -24,7 +24,7 @@ public class FilterCoachWorksActor extends AbstractActor{
             return;
         }
         LOG.info("Filtered coachwork {}", coachwork);
-        final ActorRef carAssembler = getContext().actorSelection("carAssembler").anchor();
+        final ActorRef carAssembler = getContext().actorFor("akka://carfactory/user/carAssembler");
         final Inbox inbox = Inbox.create(getContext().system());
         inbox.send(carAssembler, coachwork);
     }
