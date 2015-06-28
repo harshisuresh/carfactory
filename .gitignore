@@ -1,5 +1,6 @@
 *#
 *.iml
+.sbtserver/
 *.ipr
 *.iws
 *.pyc
