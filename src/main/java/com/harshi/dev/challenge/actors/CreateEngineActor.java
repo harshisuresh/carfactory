@@ -4,6 +4,8 @@ import akka.actor.AbstractActor;
 import akka.actor.ActorRef;
 import akka.actor.Inbox;
 import akka.actor.Props;
+import akka.event.Logging;
+import akka.event.LoggingAdapter;
 import akka.japi.pf.ReceiveBuilder;
 import com.harshi.dev.challenge.domain.Engine;
 import com.harshi.dev.challenge.domain.Message;
@@ -16,6 +18,7 @@ import java.util.UUID;
  */
 public class CreateEngineActor extends AbstractActor {
 
+    private final LoggingAdapter LOG = Logging.getLogger(context().system(), this);
     private volatile boolean stop;
     private final Random random = new Random();
 
@@ -30,16 +33,14 @@ public class CreateEngineActor extends AbstractActor {
             System.out.println("Engines produced");
             produceEngines();
         } else{
-            System.out.println("Stopped producing engines");
+            LOG.info("Stopped producing engines");
         }
     }
 
     private void produceEngines(){
-
+        final ActorRef engineFilter = getContext().actorOf(Props.create(FilterEngineActor.class), "engineFilter");
+        final Inbox inbox = Inbox.create(getContext().system());
         while(!stop){
-            final ActorRef engineFilter = getContext().actorOf(Props.create(FilterEngineActor.class), "engineFilter");
-
-            final Inbox inbox = Inbox.create(getContext().system());
             for (int i = 1 ; i < 20; i++) {
                 Engine engine = new Engine("Engine:"+ UUID.randomUUID().toString(), random.nextBoolean());
                 inbox.send(engineFilter, engine);

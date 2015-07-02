@@ -1,24 +1,31 @@
 package com.harshi.dev.challenge.domain;
 
+import akka.event.Logging;
+import akka.event.LoggingAdapter;
+
 import java.util.List;
 
 /**
  * Created by harshitha.suresh on 27/06/2015.
  */
 public class Car {
-    private final String serialNumber;
+    private final Long serialNumber;
     private final Engine engine;
     private final CoachWork  coachWork;
     private final List<Wheel> wheels;
+    private Colour colour;
 
-    public Car(String serialNumber, Engine engine, CoachWork coachWork, List<Wheel> wheels) {
+    public Car(Long serialNumber, Engine engine, CoachWork coachWork, List<Wheel> wheels) {
+        if(wheels == null || wheels.size() != 4){
+            throw new IllegalArgumentException("Please pass 4 wheels");
+        }
         this.serialNumber = serialNumber;
         this.engine = engine;
         this.coachWork = coachWork;
         this.wheels = wheels;
     }
 
-    public String getSerialNumber() {
+    public Long getSerialNumber() {
         return serialNumber;
     }
 
@@ -34,6 +41,14 @@ public class Car {
         return coachWork;
     }
 
+    public Colour getColour() {
+        return colour;
+    }
+
+    public void setColour(Colour colour) {
+        this.colour = colour;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -41,9 +56,10 @@ public class Car {
 
         Car car = (Car) o;
 
-        if (serialNumber != car.serialNumber) return false;
         if (coachWork != null ? !coachWork.equals(car.coachWork) : car.coachWork != null) return false;
+        if (colour != car.colour) return false;
         if (engine != null ? !engine.equals(car.engine) : car.engine != null) return false;
+        if (serialNumber != null ? !serialNumber.equals(car.serialNumber) : car.serialNumber != null) return false;
         if (wheels != null ? !wheels.equals(car.wheels) : car.wheels != null) return false;
 
         return true;
@@ -55,6 +71,7 @@ public class Car {
         result = 31 * result + (engine != null ? engine.hashCode() : 0);
         result = 31 * result + (coachWork != null ? coachWork.hashCode() : 0);
         result = 31 * result + (wheels != null ? wheels.hashCode() : 0);
+        result = 31 * result + (colour != null ? colour.hashCode() : 0);
         return result;
     }
 
@@ -65,6 +82,7 @@ public class Car {
                 ", engine=" + engine +
                 ", coachWork=" + coachWork +
                 ", wheels=" + wheels +
+                ", colour=" + colour +
                 '}';
     }
 }

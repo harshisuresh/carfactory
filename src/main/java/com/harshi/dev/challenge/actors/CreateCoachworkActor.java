@@ -4,6 +4,8 @@ import akka.actor.AbstractActor;
 import akka.actor.ActorRef;
 import akka.actor.Inbox;
 import akka.actor.Props;
+import akka.event.Logging;
+import akka.event.LoggingAdapter;
 import akka.japi.pf.ReceiveBuilder;
 import com.harshi.dev.challenge.domain.CoachWork;
 import com.harshi.dev.challenge.domain.Message;
@@ -15,6 +17,7 @@ import java.util.UUID;
  * Created by harshitha.suresh on 27/06/2015.
  */
 public class CreateCoachworkActor extends AbstractActor {
+    private final LoggingAdapter LOG = Logging.getLogger(context().system(), this);
     private volatile boolean stop;
     private final Random random = new Random();
     public CreateCoachworkActor(){
@@ -23,18 +26,19 @@ public class CreateCoachworkActor extends AbstractActor {
 
     private void handleMessage(Message message){
         if(Message.START.equals(message)){
-            System.out.println("Coachworks produced");
+            LOG.info("Coachworks produced");
             produceCoachworks();
         } else{
-            System.out.println("Stopped producing coachworks");
+            LOG.info("Stopped producing coachworks");
         }
     }
 
     private void produceCoachworks(){
-        while(!stop){
-            final ActorRef coachworkFilter = getContext().actorOf(Props.create(FilterCoachWorksActor.class), "coachworkFilter");
+        final ActorRef coachworkFilter = getContext().actorOf(Props.create(FilterCoachWorksActor.class), "coachworkFilter");
 
-            final Inbox inbox = Inbox.create(getContext().system());
+        final Inbox inbox = Inbox.create(getContext().system());
+        while(!stop){
+
             for (int i = 1 ; i < 20; i++) {
                 CoachWork coachWork = new CoachWork("Coach:"+UUID.randomUUID().toString(), random.nextBoolean());
                 inbox.send(coachworkFilter, coachWork);
